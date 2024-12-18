@@ -1,0 +1,17 @@
+-- CreateTable
+CREATE TABLE "User" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "regDate" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "username" TEXT NOT NULL,
+    "dkp" INTEGER NOT NULL DEFAULT 0,
+    "weapon1Id" INTEGER,
+    "weapon2Id" INTEGER,
+    CONSTRAINT "User_weapon1Id_fkey" FOREIGN KEY ("weapon1Id") REFERENCES "Weapons" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT "User_weapon2Id_fkey" FOREIGN KEY ("weapon2Id") REFERENCES "Weapons" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Weapons" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "description" TEXT NOT NULL
+);

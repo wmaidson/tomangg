@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  regDate       DateTime  @default(now())
+  username      String
+  dkp           Int       @default(0)
+  weapon1Id     Int?
+  weapon2Id     Int?
+  guildBoss     Int       @default(0)
+  eventQuantity Int       @default(0)
+  weapon1       Weapons?  @relation("weapon1", fields: [weapon1Id], references: [id])
+  weapon2       Weapons?  @relation("weapon2", fields: [weapon2Id], references: [id])
+  bids          Auction[] @relation("BidRelation")
+}
+
+model Weapons {
+  id             Int    @id @default(autoincrement())
+  description    String
+  usersAsWeapon1 User[] @relation("weapon1")
+  usersAsWeapon2 User[] @relation("weapon2")
+}
+
+model Auction {
+  id               Int      @id @default(autoincrement())
+  description      String
+  createdAt        DateTime @default(now())
+  startAt          DateTime
+  endAt            DateTime
+  currentBidUserId Int? // Relacionado ao User
+  currentBidDKP     Int?    @default(0)
+  status           String   @default("aberto") // "aberto", "fechado", "encerrado"
+
+  currentBidUser User? @relation("BidRelation", fields: [currentBidUserId], references: [id])
+}
