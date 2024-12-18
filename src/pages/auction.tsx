@@ -31,16 +31,16 @@ interface Auction {
 }
 
 export default function Auction() {
-    const [auctions, setAuctions] = useState([]);
+    const [auctions, setAuctions] = useState<Auction[]>([]);
     const [showModal, setShowModal] = useState(false);
-    const [selectedAuction, setSelectedAuction] = useState(null);
-    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedAuction, setSelectedAuction] = useState<Auction | null>(null);
+    const [selectedUser, setSelectedUser] = useState<number | null>(null);
     const [bidValue, setBidValue] = useState(0);
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null); // Estado para mensagens de erro
     const [showErrorModal, setShowErrorModal] = useState(false); // Controle do modal de erro
 
-    const handleOpenModal = (auction) => {
+    const handleOpenModal = (auction: Auction) => {
         setSelectedAuction(auction);
         setShowModal(true);
     };
@@ -52,7 +52,7 @@ export default function Auction() {
         }
 
         try {
-            await axios.put(`http://localhost:3333/auctions/bid/${selectedAuction.id}`, {
+            await axios.put(`http://localhost:3333/auctions/bid/${selectedAuction?.id}`, {
                 userId: selectedUser,
                 bidDKP: bidValue,
             });
@@ -200,7 +200,7 @@ export default function Auction() {
                         fullWidth
                         label="Selecione o Usuário"
                         value={selectedUser}
-                        onChange={(e) => setSelectedUser(e.target.value)}
+                        onChange={(e) => setSelectedUser(Number(e.target.value))}
                         sx={{
                             mb: 3,
                             backgroundColor: "#3A3D45",
@@ -300,8 +300,6 @@ export default function Auction() {
                             </Box>
                         </Box>
                     </Modal>
-
-
                 </Box>
             </Modal>
         </Box>

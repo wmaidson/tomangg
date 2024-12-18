@@ -292,7 +292,6 @@ export default function GuildBoss() {
                         {filteredUsers.map((user) => (
                             <ListItem
                                 key={user.username} // Usar personagem como identificador único
-                                button
                                 onClick={() => addUserToStack(user)}
                                 sx={{
                                     backgroundColor: "#3A3D45",

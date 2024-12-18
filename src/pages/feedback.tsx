@@ -184,7 +184,7 @@ export default function Feedback() {
                     {filteredUsers.map((user) => (
                         <ListItem
                             key={user.id}
-                            button
+                            component="button"
                             onClick={() => handleSelectUser(user)}
                             sx={{
                                 backgroundColor: "#3A3D45",
@@ -192,6 +192,7 @@ export default function Feedback() {
                                 marginBottom: "10px",
                                 borderRadius: "5px",
                                 ":hover": { backgroundColor: "#4A4E57" },
+                                padding: 2,
                             }}
                         >
                             <ListItemText primary={user.personagem} />
@@ -417,7 +418,6 @@ export default function Feedback() {
                     {filteredFeedbacks.map((feedback) => (
                         <ListItem
                             key={feedback.id}
-                            button
                             onClick={() => handleOpenFeedbackModal(feedback)}
                             sx={{
                                 backgroundColor: "#3A3D45",

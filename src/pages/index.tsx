@@ -14,14 +14,32 @@ import {
 } from "@mui/material";
 import axios from "axios";
 
+interface User {
+    id: number;
+    username: string;
+    dkp: number;
+    weapon1?: { description: string };
+    weapon2?: { description: string };
+}
+
+interface Evento {
+    id: number;
+    titulo: string;
+    imagem: string;
+    DKP?: number;
+    descricao?: string;
+    link: string;
+}
+
+
+
 export default function Home() {
 
 
     const router = useRouter();
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<User[]>([]);
 
     const [openEdit, setOpenEdit] = useState(false);
-    const [editedEvents, setEditedEvents] = useState([]);
 
     // Funções para abrir/fechar modal de edição
     const handleOpenEdit = () => setOpenEdit(true);
@@ -29,83 +47,31 @@ export default function Home() {
 
 
     const [open, setOpen] = useState(false);
-    const [selectedEvents, setSelectedEvents] = useState([]);
+    const [selectedEvents, setSelectedEvents] = useState<number[]>([]);
+    const [editedEvents, setEditedEvents] = useState<Evento[]>([]);
 
     // Funções para abrir/fechar modal
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-
-    // Dados para a tabela
-    const rows = [
-
-        { posicao: 1, personagem: "FranLDV", armas: ["dagger", "wand"], DKP: 750 },
-        { posicao: 2, personagem: "DamaDasTrevas", armas: ["greatsword", "wand"], DKP: 500 },
-        { posicao: 3, personagem: "SPLAXSH7", armas: ["crossbow", "staff"], DKP: 350 },
-        { posicao: 4, personagem: "LionGreenwich", armas: ["sword", "longbow"], DKP: 100 },
-    ];
-
     // Dados para os eventos
-    const [eventos, setEventos] = useState([
-        {
-            id: 1,
-            titulo: "Bosses da Guild",
-            imagem: "/events/guildboss.png",
-            DKP: 5,
-            descricao: "A cada boss derrotado, você recebe",
-            link: "/guildboss", // Caminho para a página de GuildBoss
-        },
-        {
-            id: 2,
-            titulo: "Reputação",
-            imagem: "/events/reputation.png",
-            DKP: 1,
-            descricao: "A cada 1.000 pontos de reputação, você recebe",
-            link: "/reputation", // Caminho para a página de Reputação
-        },
-        {
-            id: 3,
-            titulo: "Evento da Pedra",
-            imagem: "/events/war.png",
-            DKP: 10,
-            descricao: "A cada evento participado você recebe",
-            link: "/war", // Caminho para a página de Evento da Pedra
-        },
-        {
-            id: 4,
-            titulo: "Cerco ao Castelo",
-            imagem: "/events/tower.png",
-            DKP: 20,
-            descricao: "A cada evento participado você recebe",
-            link: "/castle", // Caminho para a página de Cerco ao Castelo
-        },
+    const [eventos, setEventos] = useState<Evento[]>([
+        { id: 1, titulo: "Bosses da Guild", imagem: "/events/guildboss.png", DKP: 5, descricao: "A cada boss derrotado, você recebe", link: "/guildboss" },
+        { id: 2, titulo: "Reputação", imagem: "/events/reputation.png", DKP: 1, descricao: "A cada 1.000 pontos de reputação, você recebe", link: "/reputation" },
+        { id: 3, titulo: "Evento da Pedra", imagem: "/events/war.png", DKP: 10, descricao: "A cada evento participado você recebe", link: "/war" },
+        { id: 4, titulo: "Cerco ao Castelo", imagem: "/events/tower.png", DKP: 20, descricao: "A cada evento participado você recebe", link: "/castle" },
+    ]);
+
+    // Dados para informacoes
+    const [information, setInformation] = useState<Evento[]>([
+        { id: 1, titulo: "Leilão", imagem: "/information/auction.png", link: "/auction" },
+        { id: 2, titulo: "Regras", imagem: "/information/rules2.png", link: "/rules" },
+        { id: 3, titulo: "Duvidas e Reclamações", imagem: "/information/faq.png", link: "/feedback" },
     ]);
 
     const navigateToEvent = (link: string) => {
         router.push(link); // Redireciona para o caminho especificado
     };
-
-    // Dados para informacoes
-    const [information, setInformation] = useState([
-        {
-            id: 1,
-            titulo: "Leilão",
-            imagem: "/information/auction.png",
-            link: "/auction",
-        },
-        {
-            id: 2,
-            titulo: "Regras",
-            imagem: "/information/rules2.png",
-            link: "/rules",
-        },
-        {
-            id: 3,
-            titulo: "Duvidas e Reclamações",
-            imagem: "/information/faq.png",
-            link: "/feedback",
-        },
-    ]);
 
     const handleInputChange = (id: any, field: any, value: any,) => {
         setEditedEvents((prev: any) =>
@@ -140,7 +106,7 @@ export default function Home() {
         const fetchUsers = async () => {
             try {
                 const response = await axios.get("http://localhost:3333/users"); // Substitua pelo seu endpoint
-                const sortedUsers = response.data.sort((a, b) => b.dkp - a.dkp); // Ordenar por DKP (decrescente)
+                const sortedUsers = response.data.sort((a: User, b: User) => b.dkp - a.dkp);
                 setUsers(sortedUsers);
             } catch (error) {
                 console.error("Erro ao buscar usuários:", error);
@@ -178,44 +144,7 @@ export default function Home() {
                 <Typography variant="h5" sx={{ fontWeight: "bold", color: "#D9D3C9", marginBottom: "10px", mb: 5, mt:5 }}>
                     Eventos
                 </Typography>
-
-                <Box sx={{ display: "flex", gap: "10px" }}>
-                    <Button
-                        variant="outlined"
-                        sx={{
-                            color: "#D9D3C9",
-                            borderColor: "#D9D3C9",
-                            ":hover": { backgroundColor: "#2C2F36", borderColor: "#D9D3C9" },
-                        }}
-                        onClick={() => alert("Editar evento")}
-                    >
-                        Criar
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        sx={{
-                            color: "#D9D3C9",
-                            borderColor: "#D9D3C9",
-                            ":hover": { backgroundColor: "#2C2F36", borderColor: "#D9D3C9" },
-                        }}
-                        onClick={initializeEditData}
-                    >
-                        Editar
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        sx={{
-                            color: "#D9D3C9",
-                            borderColor: "#D9D3C9",
-                            ":hover": { backgroundColor: "#2C2F36", borderColor: "#D9D3C9" },
-                        }}
-                        onClick={handleOpen}
-                    >
-                        Excluir
-                    </Button>
-                </Box>
             </Box>
-
 
 
             {/* Modal para exclusão */}

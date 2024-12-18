@@ -16,9 +16,11 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // Definição de tipo para os usuários
 interface User {
+    id: number;
     posicao: number;
-    personagem: string;
+    username: string;
     reputation: number;
+    dkp: number;
 }
 
 export default function Reputation() {
@@ -26,10 +28,10 @@ export default function Reputation() {
 
     // Lista de usuários com reputação
     const users: User[] = [
-        { posicao: 1, personagem: "FranLDV", reputation: 9542 },
-        { posicao: 2, personagem: "DamaDasTrevas", reputation: 7289 },
-        { posicao: 3, personagem: "SPLAXSH7", reputation: 6235 },
-        { posicao: 4, personagem: "LionGreenwich", reputation: 500 },
+        { id: 1, posicao: 1, username: "FranLDV", reputation: 9542, dkp: 10},
+        { id: 2, posicao: 2, username: "DamaDasTrevas", reputation: 7289, dkp: 20},
+        { id: 3, posicao: 3, username: "SPLAXSH7", reputation: 6235, dkp: 20},
+        { id: 4, posicao: 4, username: "LionGreenwich", reputation: 500, dkp: 20},
     ];
 
     // Função para calcular o DKP baseado na reputação
@@ -41,6 +43,7 @@ export default function Reputation() {
         router.push("/"); // Redireciona para a página inicial
     };
 
+    const [selectedUser, setSelectedUser] = useState<number | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>(""); // Termo de busca
     const [filteredUsers, setFilteredUsers] = useState<User[]>(users); // Lista filtrada
     const [selectedUsers, setSelectedUsers] = useState<User[]>([]); // Usuários selecionados
@@ -53,7 +56,7 @@ export default function Reputation() {
         setSearchTerm(term);
         setFilteredUsers(
             users.filter((user) =>
-                user.personagem.toLowerCase().includes(term)
+                user.username.toLowerCase().includes(term)
             )
         );
     };
@@ -181,7 +184,7 @@ export default function Reputation() {
                                         {user.posicao}
                                     </TableCell>
                                     <TableCell sx={{ color: "#D9D3C9", textAlign: "center" }}>
-                                        {user.personagem}
+                                        {user.username}
                                     </TableCell>
                                     <TableCell sx={{ color: "#D9D3C9", textAlign: "center" }}>
                                         {user.reputation}
@@ -252,7 +255,6 @@ export default function Reputation() {
                         {filteredUsers.map((user) => (
                             <ListItem
                                 key={user.posicao}
-                                button
                                 onClick={() => addUserToStack(user)}
                                 sx={{
                                     backgroundColor: "#3A3D45",
@@ -263,7 +265,7 @@ export default function Reputation() {
                                 }}
                             >
                                 <ListItemText
-                                    primary={`${user.personagem} (Reputação: ${user.reputation})`}
+                                    primary={`${user.username} (Reputação: ${user.reputation})`}
                                 />
                             </ListItem>
                         ))}
@@ -287,7 +289,6 @@ export default function Reputation() {
                         {selectedUsers.map((user) => (
                             <ListItem
                                 key={user.posicao}
-                                button
                                 onClick={() => handleEditReputation(user)}
                                 sx={{
                                     backgroundColor: "#3A3D45",
@@ -299,7 +300,7 @@ export default function Reputation() {
                                 }}
                             >
                                 <ListItemText
-                                    primary={`${user.personagem} (Reputação: ${user.reputation})`}
+                                    primary={`${user.username} (Reputação: ${user.reputation})`}
                                 />
                             </ListItem>
                         ))}
@@ -352,14 +353,14 @@ export default function Reputation() {
                     {editingUser && (
                         <Box>
                             <Typography variant="body1" sx={{ mb: 5}}>
-                                Usuário: {editingUser.personagem}
+                                Usuário: {editingUser.username}
                             </Typography>
                             <TextField
                                 select
                                 fullWidth
                                 label="Selecione o Usuário"
                                 value={selectedUser}
-                                onChange={(e) => setSelectedUser(e.target.value)}
+                                onChange={(e) => setSelectedUser(Number(e.target.value))}
                                 sx={{
                                     marginBottom: 3,
                                     backgroundColor: "#3A3D45",
@@ -378,24 +379,26 @@ export default function Reputation() {
                                         color: "#D9D3C9", // Cor do ícone de dropdown
                                     },
                                 }}
-                                MenuProps={{
-                                    PaperProps: {
-                                        sx: {
-                                            backgroundColor: "#3A3D45", // Fundo da lista
-                                            color: "#D9D3C9", // Cor do texto da lista
-                                            borderRadius: "5px",
-                                            "& .MuiMenuItem-root": {
-                                                "&.Mui-selected": {
-                                                    backgroundColor: "#B3B0A8", // Fundo do item selecionado
-                                                    color: "#23242A", // Texto do item selecionado
-                                                },
-                                                "&.Mui-selected:hover": {
-                                                    backgroundColor: "#D9D3C9", // Fundo ao passar o mouse no item selecionado
-                                                    color: "#23242A", // Texto ao passar o mouse no item selecionado
-                                                },
-                                                "&:hover": {
-                                                    backgroundColor: "#2C2F36", // Fundo ao passar o mouse nos itens
-                                                    color: "#D9D3C9", // Texto ao passar o mouse nos itens
+                                SelectProps={{
+                                    MenuProps: {
+                                        PaperProps: {
+                                            sx: {
+                                                backgroundColor: "#3A3D45", // Fundo da lista
+                                                color: "#D9D3C9", // Cor do texto da lista
+                                                borderRadius: "5px",
+                                                "& .MuiMenuItem-root": {
+                                                    "&.Mui-selected": {
+                                                        backgroundColor: "#B3B0A8", // Fundo do item selecionado
+                                                        color: "#23242A", // Texto do item selecionado
+                                                    },
+                                                    "&.Mui-selected:hover": {
+                                                        backgroundColor: "#D9D3C9", // Fundo ao passar o mouse no item selecionado
+                                                        color: "#23242A", // Texto ao passar o mouse no item selecionado
+                                                    },
+                                                    "&:hover": {
+                                                        backgroundColor: "#2C2F36", // Fundo ao passar o mouse nos itens
+                                                        color: "#D9D3C9", // Texto ao passar o mouse nos itens
+                                                    },
                                                 },
                                             },
                                         },
