@@ -32,8 +32,6 @@ interface Evento {
     link: string;
 }
 
-
-
 export default function Home() {
 
 
@@ -65,42 +63,13 @@ export default function Home() {
 
     // Dados para informacoes
     const [information, setInformation] = useState<Evento[]>([
-        { id: 1, titulo: "Leilão", imagem: "/information/auction.png", link: "/auction" },
-        { id: 2, titulo: "Regras", imagem: "/information/rules2.png", link: "/rules" },
-        { id: 3, titulo: "Duvidas e Reclamações", imagem: "/information/faq.png", link: "/feedback" },
+        { id: 1, titulo: "Leilão", imagem: "https://tomangg.s3.us-east-2.amazonaws.com/Information/auction.png", link: "/auction" },
+        { id: 2, titulo: "Regras", imagem: "https://tomangg.s3.us-east-2.amazonaws.com/Information/rules2.png", link: "/rules" },
+        { id: 3, titulo: "Duvidas e Reclamações", imagem: "https://tomangg.s3.us-east-2.amazonaws.com/Information/faq.png", link: "/feedback" },
     ]);
 
     const navigateToEvent = (link: string) => {
         router.push(link); // Redireciona para o caminho especificado
-    };
-
-    const handleInputChange = (id: any, field: any, value: any,) => {
-        setEditedEvents((prev: any) =>
-            prev.map((evento: any) =>
-                evento.id === id ? { ...evento, [field]: value } : evento
-            )
-        );
-    };
-
-    // Função para salvar as edições
-    const handleSaveEdit = () => {
-        setEventos(editedEvents); // Atualiza os dados com os editados
-        alert("Eventos atualizados com sucesso!");
-        handleCloseEdit();
-    };
-
-    // Inicializa os dados editados ao abrir a modal
-    const initializeEditData = () => {
-        setEditedEvents([...eventos]);
-        handleOpenEdit();
-    };
-
-    const handleSelectEvent = (eventId: any) => {
-        setSelectedEvents((prev: any) =>
-            prev.includes(eventId)
-                ? prev.filter((id: any) => id !== eventId)
-                : [...prev, eventId]
-        );
     };
 
     useEffect(() => {
@@ -183,7 +152,6 @@ export default function Home() {
                                             <Checkbox
                                                 sx={{ color: "#D9D3C9", "&.Mui-checked": { color: "#D9D3C9" } }}
                                                 checked={selectedEvents.includes(evento.id)}
-                                                onChange={() => handleSelectEvent(evento.id)}
                                             />
                                         </TableCell>
                                         <TableCell sx={{ color: "#D9D3C9", textAlign: "center" }}>{evento.titulo}</TableCell>
