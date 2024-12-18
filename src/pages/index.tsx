@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import {
     Box,
     Table,
@@ -260,18 +261,13 @@ export default function Home() {
                         </Typography>
 
                         <Link href={evento.link}>
-                        {/* Imagem do evento */}
-                        <img
-                            src={evento.imagem}
-                            alt={`Evento ${evento.id}`}
-                            style={{
-                                width: "100%",
-                                height: "150px",
-                                objectFit: "cover",
-                                borderRadius: "10px",
-                                marginBottom: "10px",
-                            }}
-                        />
+                            <Image
+                                src={evento.imagem}
+                                alt={evento.titulo}
+                                width={300}
+                                height={150}
+                                style={{ objectFit: "cover", borderRadius: "10px", marginBottom: "10px" }}
+                            />
                         </Link>
 
                         {/* Descrição do evento */}
@@ -354,20 +350,24 @@ export default function Home() {
                                 <TableCell sx={{ color: "#D9D3C9", textAlign: "center" }}>
                                     {user.username}
                                 </TableCell>
-                                <TableCell sx={{ color: "#D9D3C9", textAlign: "center" }}>
-                                    <Box sx={{ display: "flex", gap: "10px" }}>
+                                <TableCell sx={{ color: "#D9D3C9", textAlign: "center", verticalAlign: "middle", }}>
+                                    <Box sx={{ display: "flex", justifyContent: "center", gap: "10px" }}>
                                         {user.weapon1 && (
-                                            <img
+                                            <Image
                                                 src={`/weapons/${user.weapon1.description}.png`}
                                                 alt={user.weapon1.description}
-                                                style={{ width: "40px", height: "40px" }}
+                                                width={40}
+                                                height={40}
+                                                style={{ objectFit: "contain" }}
                                             />
                                         )}
                                         {user.weapon2 && (
-                                            <img
+                                            <Image
                                                 src={`/weapons/${user.weapon2.description}.png`}
                                                 alt={user.weapon2.description}
-                                                style={{ width: "40px", height: "40px" }}
+                                                width={40}
+                                                height={40}
+                                                style={{ objectFit: "contain" }}
                                             />
                                         )}
                                     </Box>
@@ -419,18 +419,13 @@ export default function Home() {
 
 
                         <Link href={information.link}>
-                        {/* Imagem do evento */}
-                        <img
-                            src={information.imagem}
-                            alt={`information ${information.id}`}
-                            style={{
-                                width: "100%",
-                                height: "150px",
-                                objectFit: "cover",
-                                borderRadius: "10px",
-                                marginBottom: "10px",
-                            }}
-                        />
+                            <Image
+                                src={information.imagem}
+                                alt={information.titulo}
+                                width={400}
+                                height={200}
+                                style={{ objectFit: "cover", borderRadius: "10px" }}
+                            />
                         </Link>
 
                     </Box>
