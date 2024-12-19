@@ -55,10 +55,10 @@ export default function Home() {
 
     // Dados para os eventos
     const [eventos, setEventos] = useState<Evento[]>([
-        { id: 1, titulo: "Bosses da Guild", imagem: "/events/guildboss.png", DKP: 5, descricao: "A cada boss derrotado, você recebe", link: "/guildboss" },
-        { id: 2, titulo: "Reputação", imagem: "/events/reputation.png", DKP: 1, descricao: "A cada 1.000 pontos de reputação, você recebe", link: "/reputation" },
-        { id: 3, titulo: "Evento da Pedra", imagem: "/events/war.png", DKP: 10, descricao: "A cada evento participado você recebe", link: "/war" },
-        { id: 4, titulo: "Cerco ao Castelo", imagem: "/events/tower.png", DKP: 20, descricao: "A cada evento participado você recebe", link: "/castle" },
+        { id: 1, titulo: "Bosses da Guild", imagem: "https://tomangg.s3.us-east-2.amazonaws.com/events/guildboss.png", DKP: 5, descricao: "A cada boss derrotado, você recebe", link: "/guildboss" },
+        { id: 2, titulo: "Reputação", imagem: "https://tomangg.s3.us-east-2.amazonaws.com/events/reputation.png", DKP: 1, descricao: "A cada 1.000 pontos de reputação, você recebe", link: "/reputation" },
+        { id: 3, titulo: "Evento da Pedra", imagem: "https://tomangg.s3.us-east-2.amazonaws.com/events/war.png", DKP: 10, descricao: "A cada evento participado você recebe", link: "/war" },
+        { id: 4, titulo: "Cerco ao Castelo", imagem: "https://tomangg.s3.us-east-2.amazonaws.com/events/tower.png", DKP: 20, descricao: "A cada evento participado você recebe", link: "/castle" },
     ]);
 
     // Dados para informacoes
@@ -67,6 +67,11 @@ export default function Home() {
         { id: 2, titulo: "Regras", imagem: "https://tomangg.s3.us-east-2.amazonaws.com/Information/rules2.png", link: "/rules" },
         { id: 3, titulo: "Duvidas e Reclamações", imagem: "https://tomangg.s3.us-east-2.amazonaws.com/Information/faq.png", link: "/feedback" },
     ]);
+
+    const generateWeaponImageURL = (weaponDescription: string | undefined): string => {
+        if (!weaponDescription) return ""; // Retorna vazio se não houver descrição
+        return `https://tomangg.s3.us-east-2.amazonaws.com/weapons/${weaponDescription.toLowerCase()}.png`;
+    };
 
     const navigateToEvent = (link: string) => {
         router.push(link); // Redireciona para o caminho especificado
@@ -322,7 +327,7 @@ export default function Home() {
                                     <Box sx={{ display: "flex", justifyContent: "center", gap: "10px" }}>
                                         {user.weapon1 && (
                                             <Image
-                                                src={`/weapons/${user.weapon1.description}.png`}
+                                                src={generateWeaponImageURL(user.weapon1.description)}
                                                 alt={user.weapon1.description}
                                                 width={40}
                                                 height={40}
@@ -331,7 +336,7 @@ export default function Home() {
                                         )}
                                         {user.weapon2 && (
                                             <Image
-                                                src={`/weapons/${user.weapon2.description}.png`}
+                                                src={generateWeaponImageURL(user.weapon2.description)}
                                                 alt={user.weapon2.description}
                                                 width={40}
                                                 height={40}

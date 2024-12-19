@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 import {
     Box,
     Table,
@@ -50,6 +51,11 @@ const UsersPage: React.FC = () => {
         weapon1Id: "",
         weapon2Id: "",
     });
+
+    const generateWeaponImageURL = (weaponDescription: string | undefined): string => {
+        if (!weaponDescription) return ""; // Retorna vazio se não houver descrição
+        return `https://tomangg.s3.us-east-2.amazonaws.com/weapons/${weaponDescription.toLowerCase()}.png`;
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -194,17 +200,21 @@ const UsersPage: React.FC = () => {
                                     <TableCell sx={{ color: "#D9D3C9" }}>
                                         <Box sx={{ display: "flex", gap: "10px" }}>
                                             {user.weapon1 && (
-                                                <img
-                                                    src={`/weapons/${user.weapon1.description}.png`}
+                                                <Image
+                                                    src={generateWeaponImageURL(user.weapon1.description)}
                                                     alt={user.weapon1.description}
-                                                    style={{ width: "40px", height: "40px" }}
+                                                    width={40}
+                                                    height={40}
+                                                    style={{ objectFit: "contain" }}
                                                 />
                                             )}
                                             {user.weapon2 && (
-                                                <img
-                                                    src={`/weapons/${user.weapon2.description}.png`}
+                                                <Image
+                                                    src={generateWeaponImageURL(user.weapon2.description)}
                                                     alt={user.weapon2.description}
-                                                    style={{ width: "40px", height: "40px" }}
+                                                    width={40}
+                                                    height={40}
+                                                    style={{ objectFit: "contain" }}
                                                 />
                                             )}
                                         </Box>
