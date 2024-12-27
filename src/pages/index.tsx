@@ -80,8 +80,8 @@ export default function Home() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get("http://localhost:3333/users"); // Substitua pelo seu endpoint
-                const sortedUsers = response.data.sort((a: User, b: User) => b.dkp - a.dkp);
+                const response = await axios.get<User[]>("http://18.221.189.33:8080/users");
+                const sortedUsers = response.data.sort((a, b) => b.dkp - a.dkp);
                 setUsers(sortedUsers);
             } catch (error) {
                 console.error("Erro ao buscar usuários:", error);
